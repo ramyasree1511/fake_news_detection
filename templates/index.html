@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruthLens | Fake News Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="site-bg site-bg-one"></div>
+    <div class="site-bg site-bg-two"></div>
+
+    <header class="site-header">
+        <div class="container nav-bar">
+            <a href="#top" class="brand">
+                <span class="brand-mark">TL</span>
+                <span class="brand-text">TruthLens</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#analyzer">Analyzer</a>
+                <a href="#features">Features</a>
+                <a href="#workflow">How It Works</a>
+            </nav>
+
+            <a href="#analyzer" class="nav-cta">Try Detector</a>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero-section">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <span class="eyebrow">AI-Powered Credibility Check</span>
+                    <h1>Detect fake news from article URLs or pasted content in seconds.</h1>
+                    <p>
+                        TruthLens combines web scraping, text preprocessing, TF-IDF, and machine learning
+                        to help users inspect whether a news article appears <strong>REAL</strong> or <strong>FAKE</strong>.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#analyzer" class="primary-btn hero-btn">Start Checking</a>
+                        <a href="#workflow" class="secondary-btn">See Workflow</a>
+                    </div>
+                </div>
+
+                <div class="hero-panel">
+                    <div class="hero-panel-card">
+                        <p class="panel-kicker">Live Detection Panel</p>
+                        <h2>Check credibility before you trust a headline.</h2>
+                        <ul class="hero-points">
+                            <li>Scrape article text from a URL</li>
+                            <li>Paste full news content manually</li>
+                            <li>See confidence, preview, and decision notes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="info-section">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="eyebrow">Platform Highlights</span>
+                    <h2>A complete fake-news detection website experience</h2>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <h3>URL Scraping</h3>
+                        <p>Extracts readable article text from news pages using BeautifulSoup and requests.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>ML Classification</h3>
+                        <p>Preprocesses text, vectorizes it with TF-IDF, and predicts REAL or FAKE.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Readable Results</h3>
+                        <p>Shows confidence score, article preview, title, source mode, and detection notes.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="analyzer" class="detector-section">
+            <div class="container detector-grid">
+                <div class="detector-copy">
+                    <span class="eyebrow">Analyzer</span>
+                    <h2>Run a live fake news check</h2>
+                    <p>
+                        Use URL mode to scrape a news article automatically, or switch to text mode
+                        when a website blocks scraping.
+                    </p>
+                </div>
+
+                <div class="detector-card">
+                    <section class="form-section">
+                        <div class="mode-switch">
+                            <button id="urlModeBtn" class="mode-btn active" type="button">Check From URL</button>
+                            <button id="textModeBtn" class="mode-btn" type="button">Paste Article Text</button>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="newsUrl">News Article URL</label>
+                            <input
+                                type="url"
+                                id="newsUrl"
+                                placeholder="https://example.com/news-article"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div id="textInputGroup" class="input-group hidden">
+                            <label for="newsText">Article Text</label>
+                            <textarea
+                                id="newsText"
+                                rows="8"
+                                placeholder="Paste the news content here if you do not want to scrape from a URL..."
+                            ></textarea>
+                        </div>
+
+                        <button id="checkNewsBtn" class="primary-btn">Check News</button>
+
+                        <div id="loading" class="loading hidden">
+                            <div class="spinner"></div>
+                            <span>Scraping article and analyzing content...</span>
+                        </div>
+                    </section>
+
+                    <section id="resultCard" class="result-card hidden">
+                        <div class="result-header">
+                            <div>
+                                <p class="result-label">Prediction</p>
+                                <h2 id="predictionText">REAL</h2>
+                                <p id="sourceText" class="source-text">Analyzed from URL</p>
+                            </div>
+                            <div class="confidence-badge">
+                                <span>Confidence</span>
+                                <strong id="confidenceText">0%</strong>
+                            </div>
+                        </div>
+
+                        <div class="meta-grid">
+                            <div class="meta-item">
+                                <span>Article Title</span>
+                                <p id="articleTitle">-</p>
+                            </div>
+                            <div class="meta-item">
+                                <span>Word Count</span>
+                                <p id="wordCount">0</p>
+                            </div>
+                            <div class="meta-item">
+                                <span>Model Accuracy</span>
+                                <p id="modelAccuracyResult">0%</p>
+                            </div>
+                        </div>
+
+                        <div class="preview-box">
+                            <h3>Extracted Article Preview</h3>
+                            <p id="previewText"></p>
+                        </div>
+
+                        <div class="preview-box">
+                            <h3>Decision Notes</h3>
+                            <p id="reasonText"></p>
+                        </div>
+                    </section>
+
+                    <p id="errorText" class="error-text hidden"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow" class="info-section workflow-section">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="eyebrow">How It Works</span>
+                    <h2>From article input to prediction output</h2>
+                </div>
+
+                <div class="workflow-grid">
+                    <article class="workflow-step">
+                        <span>01</span>
+                        <h3>Collect</h3>
+                        <p>The app scrapes article text from a URL or accepts pasted content directly.</p>
+                    </article>
+                    <article class="workflow-step">
+                        <span>02</span>
+                        <h3>Process</h3>
+                        <p>Text is cleaned by lowercasing, removing punctuation, tokenizing, and removing stopwords.</p>
+                    </article>
+                    <article class="workflow-step">
+                        <span>03</span>
+                        <h3>Predict</h3>
+                        <p>The trained machine-learning model scores the article as REAL or FAKE with confidence.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div>
+                <strong>TruthLens</strong>
+                <p>Fake News Detection using Flask, BeautifulSoup, NLTK, and scikit-learn.</p>
+            </div>
+            <a href="#top" class="footer-link">Back to top</a>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
